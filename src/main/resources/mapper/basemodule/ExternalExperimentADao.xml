@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kdde.basemodule.basemodule.dao.ExternalExperimentADao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.kdde.basemodule.basemodule.entity.ExternalExperimentAEntity" id="externalExperimentAMap">
+        <result property="sampleserial" column="SampleSerial"/>
+        <result property="samplename" column="SampleName"/>
+        <result property="nucleationsite" column="NucleationSite"/>
+        <result property="typeofsbf" column="TypeofSBF"/>
+        <result property="componentofsbf" column="ComponentofSBF"/>
+        <result property="sbfflowspeed" column="SBFFlowSpeed"/>
+        <result property="sbfflowspeedUnit" column="SBFFlowSpeed-Unit"/>
+        <result property="immersiontime" column="ImmersionTime"/>
+        <result property="immersiontimeUnit" column="ImmersionTime-Unit"/>
+        <result property="formationofbonelikeapatiteCharacterization" column="FormationofBonelikeApatite-Characterization"/>
+        <result property="semresult" column="SEMResult"/>
+        <result property="semPhotos" column="SEM-Photos"/>
+        <result property="xrdPhase" column="XRD-Phase"/>
+        <result property="xrdPhasecomposition" column="XRD-PhaseComposition"/>
+        <result property="xrdPhotos" column="XRD-Photos"/>
+        <result property="ftirresult" column="FTIRResult"/>
+        <result property="growthofapatite" column="GrowthofApatite"/>
+        <result property="gragegrowthofapatite" column="GrageGrowthofApatite"/>
+    </resultMap>
+
+
+</mapper>

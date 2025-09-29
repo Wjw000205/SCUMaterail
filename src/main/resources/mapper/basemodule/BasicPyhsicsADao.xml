@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kdde.basemodule.basemodule.dao.BasicPyhsicsADao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.kdde.basemodule.basemodule.entity.BasicPyhsicsAEntity" id="basicPyhsicsAMap">
+        <result property="sampleserial" column="SampleSerial"/>
+        <result property="samplename" column="SampleName"/>
+        <result property="matspecies" column="MatSpecies"/>
+        <result property="density" column="Density"/>
+        <result property="densityUnit" column="Density-Unit"/>
+        <result property="meltingpoint" column="MeltingPoint"/>
+        <result property="meltingpointUnit" column="MeltingPoint-Unit"/>
+        <result property="phasetransitiontemperature" column="PhaseTransitionTemperature"/>
+        <result property="phasetransitiontemperatureUnit" column="PhaseTransitionTemperature-Unit"/>
+        <result property="crystallinity" column="Crystallinity"/>
+        <result property="degreeofpolymerization" column="DegreeofPolymerization"/>
+        <result property="phvalue" column="pHValue"/>
+        <result property="color" column="Color"/>
+        <result property="capRatio" column="CaP-Ratio"/>
+        <result property="granularity" column="Granularity"/>
+        <result property="granularitySd" column="Granularity-SD"/>
+        <result property="granularityUnit" column="Granularity-Unit"/>
+    </resultMap>
+
+
+</mapper>

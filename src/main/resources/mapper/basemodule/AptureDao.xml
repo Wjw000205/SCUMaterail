@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kdde.basemodule.basemodule.dao.AptureDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.kdde.basemodule.basemodule.entity.AptureEntity" id="aptureMap">
+        <result property="sampleserial" column="SampleSerial"/>
+        <result property="samplename" column="SampleName"/>
+        <result property="specificsurfaceareaTestmethod" column="SpecificSurfaceArea-TestMethod"/>
+        <result property="specificsurfacearea" column="SpecificSurfaceArea"/>
+        <result property="specificsurfaceareaUnit" column="SpecificSurfaceArea-Unit"/>
+        <result property="averageporediameterTestmethod" column="AveragePoreDiameter-TestMethod"/>
+        <result property="averageporediameter" column="AveragePoreDiameter"/>
+        <result property="averageporediameterSd" column="AveragePoreDiameter-SD"/>
+        <result property="averageporediameterUnit" column="AveragePoreDiameter-Unit"/>
+        <result property="porosityTestmethod" column="Porosity-TestMethod"/>
+        <result property="porosity" column="Porosity"/>
+        <result property="porositySd" column="Porosity-SD"/>
+        <result property="porosityUnit" column="Porosity-Unit"/>
+        <result property="totalporearea" column="TotalPoreArea"/>
+        <result property="totalporeareaSd" column="TotalPoreArea-SD"/>
+        <result property="totalporeareaUnit" column="TotalPoreArea-Unit"/>
+        <result property="microporediameterMin" column="MicroporeDiameter-Min"/>
+        <result property="microporediameterMax" column="MicroporeDiameter-Max"/>
+        <result property="microporediameterUnit" column="MicroporeDiameter-unit"/>
+        <result property="macroporediameterMin" column="MacroporeDiameter-Min"/>
+        <result property="macroporediameterMax" column="MacroporeDiameter-Max"/>
+        <result property="macroporediameterUnit" column="MacroporeDiameter-unit"/>
+        <result property="poresizedistributionphotos" column="PoreSizeDistributionPhotos"/>
+        <result property="f24" column="f24"/>
+        <result property="f25" column="f25"/>
+        <result property="f26" column="f26"/>
+        <result property="f27" column="f27"/>
+        <result property="f28" column="f28"/>
+        <result property="f29" column="f29"/>
+        <result property="f30" column="f30"/>
+        <result property="f31" column="f31"/>
+        <result property="f32" column="f32"/>
+        <result property="f33" column="f33"/>
+        <result property="f34" column="f34"/>
+        <result property="f35" column="f35"/>
+        <result property="f36" column="f36"/>
+        <result property="f37" column="f37"/>
+        <result property="f38" column="f38"/>
+        <result property="f39" column="f39"/>
+    </resultMap>
+
+
+</mapper>

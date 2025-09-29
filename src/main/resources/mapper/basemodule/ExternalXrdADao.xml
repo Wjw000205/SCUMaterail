@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kdde.basemodule.basemodule.dao.ExternalXrdADao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.kdde.basemodule.basemodule.entity.ExternalXrdAEntity" id="externalXrdAMap">
+        <result property="sampleserial" column="SampleSerial"/>
+        <result property="typeofsbf" column="TypeofSBF"/>
+        <result property="immersiontime" column="ImmersionTime"/>
+        <result property="immersiontimeUnit" column="ImmersionTime-Unit"/>
+        <result property="typeofxrd" column="TypeofXRD"/>
+        <result property="equipmentxrd" column="EquipmentXRD"/>
+        <result property="xrdcharacterization" column="XRDCharacterization"/>
+        <result property="detectedphase" column="DetectedPhase"/>
+        <result property="jcpdsnumber" column="JCPDSNumber"/>
+        <result property="thetadegree" column="ThetaDegree"/>
+        <result property="millerIndicesHkl" column="Miller indices-hkl"/>
+        <result property="spectraxrd" column="SpectraXRD"/>
+    </resultMap>
+
+
+</mapper>

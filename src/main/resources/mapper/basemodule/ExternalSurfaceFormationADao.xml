@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kdde.basemodule.basemodule.dao.ExternalSurfaceFormationADao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.kdde.basemodule.basemodule.entity.ExternalSurfaceFormationAEntity" id="externalSurfaceFormationAMap">
+        <result property="sampleserial" column="SampleSerial"/>
+        <result property="typeofsbf" column="TypeofSBF"/>
+        <result property="immersiontime" column="ImmersionTime"/>
+        <result property="immersiontimeUnit" column="ImmersionTime-Unit"/>
+        <result property="accumulationpoint" column="AccumulationPoint"/>
+        <result property="surfaceconstitutionserial" column="SurfaceConstitutionSerial"/>
+        <result property="surfaceelementcharacterization" column="SurfaceElementCharacterization"/>
+        <result property="surfaceelementname" column="SurfaceElementName"/>
+        <result property="surfaceelementrepresenttype" column="SurfaceElementRepresentType"/>
+        <result property="surfaceelementdate" column="SurfaceElementDate"/>
+        <result property="surfaceelementerrorrange" column="SurfaceElementErrorRange"/>
+    </resultMap>
+
+
+</mapper>

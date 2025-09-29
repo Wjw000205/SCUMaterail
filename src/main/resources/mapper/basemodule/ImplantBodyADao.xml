@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kdde.basemodule.basemodule.dao.ImplantBodyADao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.kdde.basemodule.basemodule.entity.ImplantBodyAEntity" id="implantBodyAMap">
+        <result property="sampleserial" column="SampleSerial"/>
+        <result property="samplename" column="SampleName"/>
+        <result property="implantsampleshape" column="ImplantSampleShape"/>
+        <result property="implantsamplesizediameter" column="ImplantSampleSizeDiameter"/>
+        <result property="implantsamplesizethickness" column="ImplantSampleSizeThickness"/>
+        <result property="implantsamplesizelength" column="ImplantSampleSizeLength"/>
+        <result property="implantsamplesizewidth" column="ImplantSampleSizeWidth"/>
+        <result property="implantsamplesizeheight" column="ImplantSampleSizeHeight"/>
+        <result property="implantsamplesizeUnit" column="ImplantSampleSize-Unit"/>
+        <result property="implantsamplepreparation" column="ImplantSamplePreparation"/>
+        <result property="implantsamplenumber" column="ImplantSampleNumber"/>
+        <result property="controlsample" column="ControlSample"/>
+        <result property="controlsamplenumber" column="ControlSampleNumber"/>
+        <result property="animalspecies" column="AnimalSpecies"/>
+        <result property="animalspeciessex" column="AnimalSpeciesSex"/>
+        <result property="animalspeciesage" column="AnimalSpeciesAge"/>
+        <result property="animalspeciesweight" column="AnimalSpeciesWeight"/>
+        <result property="implantsite" column="ImplantSite"/>
+        <result property="implantduration" column="ImplantDuration"/>
+        <result property="implantdurationUnit" column="ImplantDuration-Unit"/>
+        <result property="surgicalcondition" column="SurgicalCondition"/>
+        <result property="tissuesampleprocessing" column="TissueSampleProcessing"/>
+        <result property="implantsitetissuestructurechange" column="ImplantSiteTissueStructureChange"/>
+        <result property="implantsitetissuereactionproperty" column="ImplantSiteTissueReactionProperty"/>
+        <result property="implantsitetissuereactionlevel" column="ImplantSiteTissueReactionLevel"/>
+        <result property="existenceofimplant" column="ExistenceofImplant"/>
+        <result property="shapeofimplant" column="ShapeofImplant"/>
+        <result property="positionofimplant" column="PositionofImplant"/>
+        <result property="degradationresidue" column="DegradationResidue"/>
+        <result property="fibrationlevel" column="FibrationLevel"/>
+        <result property="inflammationlevel" column="InflammationLevel"/>
+        <result property="inflammatorycelltype" column="InflammatoryCellType"/>
+        <result property="inflammatorycellreaction" column="InflammatoryCellReaction"/>
+        <result property="necrosistype" column="NecrosisType"/>
+        <result property="necrosislevel" column="NecrosisLevel"/>
+        <result property="othertissuechange" column="OtherTissueChange"/>
+        <result property="osteogenesis" column="Osteogenesis"/>
+        <result property="osteogenesiscondition" column="OsteogenesisCondition"/>
+        <result property="osteogenesisareapercentage" column="OsteogenesisAreaPercentage"/>
+        <result property="osteogenesisareapercentageSd" column="OsteogenesisAreaPercentage-SD"/>
+        <result property="materialsresorption" column="MaterialsResorption"/>
+        <result property="materialsresorptionSd" column="MaterialsResorption-SD"/>
+        <result property="tissueslice" column="TissueSlice"/>
+        <result property="newboneelasticmodulus" column="NewboneElasticModulus"/>
+        <result property="newboneelasticmodulusUnit" column="NewboneElasticModulus-Unit"/>
+        <result property="newbonetensilestrength" column="NewboneTensileStrength"/>
+        <result property="newbonetensilestrengthUnit" column="NewboneTensileStrength-Unit"/>
+        <result property="newbonecompressivestrength" column="NewboneCompressiveStrength"/>
+        <result property="newbonecompressivestrengthUnit" column="NewboneCompressiveStrength-Unit"/>
+    </resultMap>
+
+
+</mapper>

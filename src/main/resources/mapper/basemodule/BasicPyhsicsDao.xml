@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kdde.basemodule.basemodule.dao.BasicPyhsicsDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.kdde.basemodule.basemodule.entity.BasicPyhsicsEntity" id="basicPyhsicsMap">
+        <result property="sampleserial" column="SampleSerial"/>
+        <result property="samplename" column="SampleName"/>
+        <result property="matspecies" column="MatSpecies"/>
+        <result property="density" column="Density"/>
+        <result property="densityUnit" column="Density-Unit"/>
+        <result property="meltingpoint" column="MeltingPoint"/>
+        <result property="meltingpointUnit" column="MeltingPoint-Unit"/>
+        <result property="phasetransitiontemperature" column="PhaseTransitionTemperature"/>
+        <result property="phasetransitiontemperatureUnit" column="PhaseTransitionTemperature-Unit"/>
+        <result property="crystallinity" column="Crystallinity"/>
+        <result property="degreeofpolymerization" column="DegreeofPolymerization"/>
+        <result property="phvalue" column="pHValue"/>
+        <result property="color" column="Color"/>
+        <result property="contactangle" column="ContactAngle"/>
+        <result property="contactangleUnit" column="ContactAngle-Unit"/>
+        <result property="capRatio" column="CaP-Ratio"/>
+        <result property="granularity" column="Granularity"/>
+        <result property="granularitySd" column="Granularity-SD"/>
+        <result property="granularityUnit" column="Granularity-Unit"/>
+        <result property="zetapotential" column="ZetaPotential"/>
+        <result property="zetapotentialUnit" column="ZetaPotential-Unit"/>
+        <result property="surfacepotential" column="SurfacePotential"/>
+        <result property="surfacepotentialUnit" column="SurfacePotential-Unit"/>
+        <result property="surfaceenergy" column="SurfaceEnergy"/>
+        <result property="surfaceenergyUnit" column="SurfaceEnergy-Unit"/>
+        <result property="roughnessra" column="RoughnessRa"/>
+        <result property="roughnessraSd" column="RoughnessRa-SD"/>
+        <result property="roughnessraUnit" column="RoughnessRa-Unit"/>
+        <result property="roughnessrarms" column="RoughnessRaRMS"/>
+        <result property="roughnessrarmsSd" column="RoughnessRaRMS-SD"/>
+        <result property="roughnessrarmsUnit" column="RoughnessRaRMS-Unit"/>
+    </resultMap>
+
+
+</mapper>

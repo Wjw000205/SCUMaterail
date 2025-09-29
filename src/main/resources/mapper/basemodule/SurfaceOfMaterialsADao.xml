@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kdde.basemodule.basemodule.dao.SurfaceOfMaterialsADao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.kdde.basemodule.basemodule.entity.SurfaceOfMaterialsAEntity" id="surfaceOfMaterialsAMap">
+        <result property="sampleserial" column="SampleSerial"/>
+        <result property="samplename" column="SampleName"/>
+        <result property="surfacetreatmentmethods" column="SurfaceTreatmentMethods"/>
+        <result property="contactangle" column="ContactAngle"/>
+        <result property="contactangleSd" column="ContactAngle-SD"/>
+        <result property="contactangleUnit" column="ContactAngle-Unit"/>
+        <result property="contactangleLiquidtype" column="ContactAngle-LiquidType"/>
+        <result property="surfacetension" column="SurfaceTension"/>
+        <result property="surfacetensionunit" column="SurfaceTensionUnit"/>
+        <result property="zetapotential" column="ZetaPotential"/>
+        <result property="zetapotentialUnit" column="ZetaPotential-Unit"/>
+        <result property="surfacepotentialsign" column="SurfacePotentialSign"/>
+        <result property="surfacepotential" column="SurfacePotential"/>
+        <result property="surfacepotentialUnit" column="SurfacePotential-Unit"/>
+        <result property="surfaceenergy" column="SurfaceEnergy"/>
+        <result property="surfaceenergyUnit" column="SurfaceEnergy-Unit"/>
+        <result property="roughnesscharacterization" column="RoughnessCharacterization"/>
+        <result property="roughnessra" column="RoughnessRa"/>
+        <result property="roughnessraSd" column="RoughnessRa-SD"/>
+        <result property="roughnessraUnit" column="RoughnessRa-Unit"/>
+        <result property="roughnessrarms" column="RoughnessRaRMS"/>
+        <result property="roughnessrarmsSd" column="RoughnessRaRMS-SD"/>
+        <result property="roughnessrarmsUnit" column="RoughnessRaRMS-Unit"/>
+        <result property="maximumroughnessdepth" column="MaximumRoughnessDepth"/>
+        <result property="maximumroughnessdepthSd" column="MaximumRoughnessDepth-SD"/>
+        <result property="maximumroughnessdepthUnit" column="MaximumRoughnessDepth-Unit"/>
+        <result property="surfacemicrohardness" column="SurfaceMicrohardness"/>
+        <result property="surfacemicrohardnessSd" column="SurfaceMicrohardness-SD"/>
+        <result property="surfacemicrohardnessUnit" column="SurfaceMicrohardness-Unit"/>
+        <result property="coatingadhesionstrength" column="CoatingAdhesionStrength"/>
+        <result property="coatingadhesionstrengthSd" column="CoatingAdhesionStrength-SD"/>
+        <result property="coatingadhesionstrengthUnit" column="CoatingAdhesionStrength-Unit"/>
+        <result property="surfacemorphologycharacterization" column="SurfaceMorphologyCharacterization"/>
+        <result property="surfacemorphology" column="SurfaceMorphology"/>
+        <result property="surfacemorphologyphoto" column="SurfaceMorphologyPhoto"/>
+    </resultMap>
+
+
+</mapper>

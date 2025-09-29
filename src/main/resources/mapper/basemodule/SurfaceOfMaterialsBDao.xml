@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kdde.basemodule.basemodule.dao.SurfaceOfMaterialsBDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.kdde.basemodule.basemodule.entity.SurfaceOfMaterialsBEntity" id="surfaceOfMaterialsBMap">
+        <result property="sampleserial" column="SampleSerial"/>
+        <result property="samplename" column="SampleName"/>
+        <result property="matconstitutionserial" column="MatConstitutionSerial"/>
+        <result property="matconstitutionconstname" column="MatConstitutionConstName"/>
+        <result property="matconstitutionconstrepresenttype" column="MatConstitutionConstRepresentType"/>
+        <result property="matconstitutionconstdate" column="MatConstitutionConstDate"/>
+        <result property="matconstitutionconsterrorrange" column="MatConstitutionConstErrorRange"/>
+        <result property="matelementname" column="MatElementName"/>
+        <result property="matelementrepresenttype" column="MatElementRepresentType"/>
+        <result property="matelementdate" column="MatElementDate"/>
+        <result property="matelementerrorrange" column="MatElementErrorRange"/>
+    </resultMap>
+
+
+</mapper>

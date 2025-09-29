@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kdde.basemodule.basemodule.dao.LiteratureSampleDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.kdde.basemodule.basemodule.entity.LiteratureSampleEntity" id="literatureSampleMap">
+        <result property="sampleserial" column="SampleSerial"/>
+        <result property="samplename" column="SampleName"/>
+        <result property="materialname" column="MaterialName"/>
+        <result property="sampleshape" column="SampleShape"/>
+        <result property="samplesizelength" column="SampleSizeLength"/>
+        <result property="samplesizewidth" column="SampleSizeWidth"/>
+        <result property="samplesizeheight" column="SampleSizeHeight"/>
+        <result property="samplesizediameter" column="SampleSizeDiameter"/>
+        <result property="samplesizethickness" column="SampleSizeThickness"/>
+        <result property="samplesizeUnit" column="SampleSize-Unit"/>
+        <result property="mattype" column="MatType"/>
+        <result property="matspecies" column="MatSpecies"/>
+        <result property="documentserial" column="DocumentSerial"/>
+    </resultMap>
+
+
+</mapper>

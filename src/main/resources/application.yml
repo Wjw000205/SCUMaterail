@@ -1,0 +1,26 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: materialPlatform
+  datasource:
+#    username: root
+#    password: 20000515TYLtyl
+#    url: jdbc:mysql://127.0.0.1:3306/n8n?useSSL=false
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+#    password: kdde@123
+    password: Wjw000205@+..
+#    url: jdbc:mysql://192.168.25.10:31330/noco?useSSL=false
+    url: jdbc:mysql://localhost:3306/noco?useSSL=false&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.kdde.basemodule.basemodule.entity  # 实体类包路径
+  global-config:
+    db-config:
+      #主键自增
+      id-type: auto
+      logic-delete-value: 1
+      logic-not-delete-value: 0

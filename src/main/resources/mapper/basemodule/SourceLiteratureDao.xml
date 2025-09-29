@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kdde.basemodule.basemodule.dao.SourceLiteratureDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.kdde.basemodule.basemodule.entity.SourceLiteratureEntity" id="sourceLiteratureMap">
+        <result property="documentserial" column="DocumentSerial"/>
+        <result property="datasourceliteraturetype" column="DataSourceLiteratureType"/>
+        <result property="datasourcepublicationname" column="DataSourcePublicationName"/>
+        <result property="datasourcetitle" column="DataSourceTitle"/>
+        <result property="datasourceauthors" column="DataSourceAuthors"/>
+        <result property="datasourceyear" column="DataSourceYear"/>
+        <result property="datasourcevolume" column="DataSourceVolume"/>
+        <result property="datasourceissue" column="DataSourceIssue"/>
+        <result property="datasourcestartpage" column="DataSourceStartPage"/>
+        <result property="datasourceendpage" column="DataSourceEndPage"/>
+        <result property="datasourcearticleno" column="DataSourceArticleNo"/>
+        <result property="doi" column="DOI"/>
+        <result property="wosnumber" column="WOSNumber"/>
+        <result property="issn" column="ISSN"/>
+        <result property="isbn" column="ISBN"/>
+        <result property="datasourceurl" column="DataSourceURL"/>
+        <result property="proceedingspapermeeting" column="ProceedingsPaperMeeting"/>
+        <result property="proceedingspaperyear" column="ProceedingsPaperYear"/>
+        <result property="proceedingspaperlocation" column="ProceedingsPaperLocation"/>
+        <result property="datasourceabstract" column="DataSourceAbstract"/>
+        <result property="datasourcefulltext" column="DataSourceFulltext"/>
+    </resultMap>
+
+
+</mapper>
