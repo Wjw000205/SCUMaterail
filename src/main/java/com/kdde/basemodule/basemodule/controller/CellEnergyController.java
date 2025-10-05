@@ -7,6 +7,7 @@ import com.kdde.basemodule.basemodule.service.CellEnergyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -62,6 +63,26 @@ public class CellEnergyController {
         }
         else{
             return R.ok("更新失败，请稍后重试");
+        }
+    }
+
+    @PostMapping("/upload")
+    public R upload(@RequestParam("file") MultipartFile file) {
+        try {
+            String msg = cellEnergyService.importFromExcel(file);
+            return R.ok(msg);
+        } catch (Exception e) {
+            return R.error("上传失败: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/batchupload")
+    public R batchUpload(@RequestParam("file") MultipartFile file){
+        try {
+            String msg = cellEnergyService.importFromExcel(file);
+            return R.ok(msg);
+        } catch (Exception e) {
+            return R.error("上传失败: " + e.getMessage());
         }
     }
 }

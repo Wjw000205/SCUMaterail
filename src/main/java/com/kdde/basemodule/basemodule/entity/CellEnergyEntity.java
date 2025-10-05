@@ -85,7 +85,7 @@ public class CellEnergyEntity {
     /**
      * 培养气氛
      */
-    float cellCultureAtmosphere;
+    String cellCultureAtmosphere;
     /**
      * 培养温度
      */

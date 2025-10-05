@@ -14,4 +14,23 @@ public class camelToUnderline {
         return sb.toString();
     }
 
+    /** 下划线转驼峰 */
+    private String underlineToCamel(String str) {
+        StringBuilder result = new StringBuilder();
+        boolean nextUpper = false;
+        for (char c : str.toCharArray()) {
+            if (c == '_') {
+                nextUpper = true;
+            } else {
+                if (nextUpper) {
+                    result.append(Character.toUpperCase(c));
+                    nextUpper = false;
+                } else {
+                    result.append(c);
+                }
+            }
+        }
+        return result.toString();
+    }
+
 }
