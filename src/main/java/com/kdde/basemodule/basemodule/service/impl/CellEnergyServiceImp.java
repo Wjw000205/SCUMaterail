@@ -1,6 +1,5 @@
 package com.kdde.basemodule.basemodule.service.impl;
 
-import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -15,10 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline;
@@ -108,13 +104,12 @@ public class CellEnergyServiceImp extends ServiceImpl<CellEnergyDao, CellEnergyE
         List<String> invalid = excelColumns.stream()
                 .filter(col -> !DB_COLUMNS.contains(col))
                 .collect(Collectors.toList());
-
         if (!invalid.isEmpty()) {
             return "列名不匹配: " + String.join(", ", invalid);
         }
 
         // 3. 读取数据并映射到实体类
-        List<CellEnergyEntity> entityList = new ArrayList<>();
+        List<CellEnergyEntity> allEntities = new ArrayList<>();
         for (int i = 1; i <= sheet.getLastRowNum(); i++) {
             Row row = sheet.getRow(i);
             if (row == null) continue;
@@ -123,35 +118,52 @@ public class CellEnergyServiceImp extends ServiceImpl<CellEnergyDao, CellEnergyE
             for (int j = 0; j < excelColumns.size(); j++) {
                 String colName = excelColumns.get(j);
                 Cell cell = row.getCell(j);
-
                 if (cell == null) continue;
 
                 Object value = getCellValue(cell);
-
-                // 借助 Map 来动态赋值（用反射或者 BeanUtils）
                 setEntityField(entity, colName, value);
             }
-            entityList.add(entity);
+            allEntities.add(entity);
         }
 
-        // 4. 批量保存
-        this.saveBatch(entityList);
+        // 4. 获取所有 sample_serial
+        List<String> serialList = allEntities.stream()
+                .map(CellEnergyEntity::getSampleSerial)
+                .filter(Objects::nonNull)
+                .map(String::trim)
+                .collect(Collectors.toList());
 
-        return "成功导入 " + entityList.size() + " 条数据";
+        if (serialList.isEmpty()) {
+            return "Excel中未找到任何样品编号（sample_serial）";
+        }
+
+        // 5. 查询数据库中已存在的 sample_serial
+        List<CellEnergyEntity> existingEntities = this.list(
+                new QueryWrapper<CellEnergyEntity>().in("sample_serial", serialList)
+        );
+        Set<String> existingSerials = existingEntities.stream()
+                .map(CellEnergyEntity::getSampleSerial)
+                .collect(Collectors.toSet());
+
+        // 6. 过滤掉已存在的样品编号
+        List<CellEnergyEntity> newEntities = allEntities.stream()
+                .filter(e -> !existingSerials.contains(e.getSampleSerial()))
+                .collect(Collectors.toList());
+
+        // 7. 保存新数据
+        if (!newEntities.isEmpty()) {
+            this.saveBatch(newEntities);
+        }
+
+        // 8. 构造返回结果
+        return String.format(
+                "导入完成：成功插入 %d 条数据，跳过已存在样品编号 %d 条。\n已存在编号：%s",
+                newEntities.size(),
+                existingSerials.size(),
+                existingSerials.isEmpty() ? "无" : String.join(", ", existingSerials)
+        );
     }
 
-    /** 驼峰转下划线 */
-//    private String camelToUnderline(String str) {
-//        StringBuilder sb = new StringBuilder();
-//        for (char c : str.toCharArray()) {
-//            if (Character.isUpperCase(c)) {
-//                sb.append("_").append(Character.toLowerCase(c));
-//            } else {
-//                sb.append(c);
-//            }
-//        }
-//        return sb.toString();
-//    }
 
     /** 获取 Excel 单元格值 */
     private Object getCellValue(Cell cell) {

@@ -9,7 +9,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
-
+/**
+ *
+ *
+ * @author wjw
+ * @email wujiawei093@gmail.com
+ * @date 2025-10-5 17:11:19
+ */
 public interface CellEnergyService extends IService<CellEnergyEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
