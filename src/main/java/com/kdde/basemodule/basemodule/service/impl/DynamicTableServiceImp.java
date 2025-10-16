@@ -63,33 +63,54 @@ public class DynamicTableServiceImp implements DynamicTableService {
     }
 
     /**
-     * 实际建表逻辑（带防注入）
+     * 动态安全建表方法：
+     * 自动包含 id、sample_serial、object_id、create_time 等字段
      */
     private void createSafeTable(String tableName, JSONArray arr) {
         List<String> columnDefs = new ArrayList<>();
+
+        // ✅ 固定主键
         columnDefs.add("id BIGINT AUTO_INCREMENT PRIMARY KEY");
 
+        // ✅ 样品编号
+        columnDefs.add("sample_serial VARCHAR(255) NOT NULL");
+
+        // ✅ 对应 object 表的关联 ID
+        columnDefs.add("object_id BIGINT DEFAULT NULL");
+
+        // ✅ 前端动态列
         for (Object o : arr) {
+            if (!(o instanceof JSONObject)) continue;
             JSONObject col = (JSONObject) o;
+
             String colName = sanitizeTableName(col.getString("columnName"));
             String colType = sanitizeType(col.getString("columnContribution"));
             columnDefs.add("`" + colName + "` " + colType);
         }
 
+        // ✅ 额外字段
+        columnDefs.add("create_time DATETIME DEFAULT CURRENT_TIMESTAMP");
+
+        // ✅ 拼接 SQL
         String sql = "CREATE TABLE IF NOT EXISTS `" + tableName + "` (\n  "
                 + String.join(",\n  ", columnDefs)
                 + "\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
+        System.out.println("✅ 正在创建表：" + tableName);
         jdbcTemplate.execute(sql);
     }
 
 
+
+
     /**
-     * 校验表名和列名合法性（防 SQL 注入）
+     * 校验字段名合法性，防止 SQL 注入
      */
     private String sanitizeTableName(String name) {
-        if (name == null) throw new IllegalArgumentException("表名不能为空");
-        // 中文名或其他字符转为拼音或安全格式
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("字段名不能为空");
+        }
+        // 允许中英文、数字、下划线
         String safe = name.replaceAll("[^a-zA-Z0-9_\\u4e00-\\u9fa5]", "_");
         if (safe.length() > 64) {
             safe = safe.substring(0, 64);
@@ -97,14 +118,19 @@ public class DynamicTableServiceImp implements DynamicTableService {
         return safe;
     }
 
+    /**
+     * 限定允许的类型，防止 SQL 注入
+     */
     private String sanitizeType(String type) {
-        // 仅允许白名单类型
         List<String> allowed = Arrays.asList(
-                "INT", "BIGINT", "VARCHAR(50)", "VARCHAR(100)", "VARCHAR(255)",
-                "TEXT", "DATETIME", "DOUBLE"
+                "VARCHAR(50)", "VARCHAR(100)", "VARCHAR(255)",
+                "INT", "BIGINT", "DOUBLE", "TEXT", "DATETIME"
         );
-        if (allowed.contains(type.toUpperCase())) return type;
-        return "VARCHAR(255)";
+        if (type == null || !allowed.contains(type.toUpperCase())) {
+            return "VARCHAR(255)";
+        }
+        return type.toUpperCase();
     }
+
 
 }
