@@ -24,3 +24,9 @@ mybatis-plus:
       id-type: auto
       logic-delete-value: 1
       logic-not-delete-value: 0
+springdoc:
+  api-docs:
+    enabled: true         # 控制是否启用API文档
+  swagger-ui:
+    enabled: true         #控制是否启用ui界面
+

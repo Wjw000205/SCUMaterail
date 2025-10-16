@@ -19,7 +19,7 @@ import lombok.ToString;
 @Data
 @ToString
 //@TableName("user_info")
-@TableName("test0405")
+@TableName("user")
 public class UserInfoEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -46,5 +46,11 @@ public class UserInfoEntity implements Serializable {
 	 * 学生名
 	 */
 	private String name;
+
+	/**
+	 * 用户身份
+	 * 1、普通用户；2、管理员；3、审核权限
+	 */
+	int role;
 
 }

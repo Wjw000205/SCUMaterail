@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author yulongtian
  * @create 2024-12-04 23:08
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.kdde.basemodule.basemodule")
 @MapperScan("com.kdde.basemodule.basemodule.dao")
 public class MaterialPlatformApplication {
     public static void main(String[] args) {

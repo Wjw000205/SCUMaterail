@@ -1,6 +1,6 @@
 package com.kdde.basemodule.basemodule.common.utils;
 
-public class camelToUnderline {
+public class CamelToUnderline {
     public static String camelToUnder(String str) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < str.length(); i++) {
