@@ -10,4 +10,6 @@ public interface ProcessService {
     public List<ModuleEntity> getModules();
 
     public JSONObject getModuleStructure(int moduleId);
+
+    public boolean createModuleTable(JSONObject jsonObject);
 }

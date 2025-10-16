@@ -1,7 +1,10 @@
 package com.kdde.basemodule.basemodule.service;
 
+import com.alibaba.fastjson2.JSONObject;
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import java.util.List;
 
 public interface DynamicTableService {
-    public void createTable(String tableName, List<String> columnNames, List<String> columnTypes);
+    public void createTablesFromJson(JSONObject jsonData);
 }

@@ -4,15 +4,20 @@ import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.kdde.basemodule.basemodule.dao.ModuleDao;
+import com.kdde.basemodule.basemodule.dao.ModuleLinkTableDao;
 import com.kdde.basemodule.basemodule.dao.ModuleStructureDao;
 import com.kdde.basemodule.basemodule.entity.ModuleEntity;
+import com.kdde.basemodule.basemodule.entity.ModuleLinkTableEntity;
 import com.kdde.basemodule.basemodule.entity.ModuleStructureEntity;
+import com.kdde.basemodule.basemodule.service.DynamicTableService;
 import com.kdde.basemodule.basemodule.service.ProcessService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class ProcessServiceImp implements ProcessService {
     @Autowired
@@ -20,6 +25,12 @@ public class ProcessServiceImp implements ProcessService {
 
     @Autowired
     private ModuleStructureDao moduleStructureDao;
+
+    @Autowired
+    private DynamicTableService dynamicTableService;
+
+    @Autowired
+    private ModuleLinkTableDao moduleLinkTableDao;
 
     @Override
     public List<ModuleEntity> getModules() {
@@ -53,5 +64,16 @@ public class ProcessServiceImp implements ProcessService {
         res.put("result", resultArray);
 
         return res;
+    }
+
+    @Override
+    public boolean createModuleTable(JSONObject jsonObject) {
+        try{
+            dynamicTableService.createTablesFromJson(jsonObject);
+            return true;
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return false;
+        }
     }
 }
