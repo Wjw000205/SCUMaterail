@@ -8,11 +8,11 @@ spring:
 #    password: 20000515TYLtyl
 #    url: jdbc:mysql://127.0.0.1:3306/n8n?useSSL=false
 #    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
+    username: kdde
 #    password: kdde@123
-    password: Wjw000205@+..
+    password: kdde@noco
 #    url: jdbc:mysql://192.168.25.10:31330/noco?useSSL=false
-    url: jdbc:mysql://localhost:3306/noco?useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://192.168.25.10:31337/noco?useSSL=false&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 mybatis-plus:
