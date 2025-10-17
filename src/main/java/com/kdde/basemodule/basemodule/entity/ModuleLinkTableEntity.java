@@ -11,7 +11,7 @@ public class ModuleLinkTableEntity {
     @TableId
     private int id;
 
-    private int tableId;
+    private int moduleId;
 
     private String objectTableName;
 
