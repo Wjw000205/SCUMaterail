@@ -2,9 +2,13 @@ package com.kdde.basemodule.basemodule.service.impl;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.JSONArray;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.kdde.basemodule.basemodule.dao.ModuleDao;
 import com.kdde.basemodule.basemodule.dao.ModuleLinkTableDao;
+import com.kdde.basemodule.basemodule.entity.ModuleEntity;
 import com.kdde.basemodule.basemodule.entity.ModuleLinkTableEntity;
 import com.kdde.basemodule.basemodule.service.DynamicTableService;
+import com.kdde.basemodule.basemodule.service.ModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -15,6 +19,9 @@ import java.util.regex.Pattern;
 public class DynamicTableServiceImp implements DynamicTableService {
     @Autowired
     ModuleLinkTableDao moduleLinkTableDao;
+
+    @Autowired
+    private ModuleService moduleService;
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -27,12 +34,18 @@ public class DynamicTableServiceImp implements DynamicTableService {
      * name_object、name_operation、name_result
      */
     public void createTablesFromJson(JSONObject jsonData) {
+
+
+
+        // 表名：该表是否创建成功。
+        Map<String,Boolean> isSuccessMap = new HashMap<>();
         // 1️⃣ 解析主信息
         String baseName = jsonData.getString("name");
         JSONObject columns = jsonData.getJSONObject("columns");
-        String objectTableName = "";
-        String operationTableName = "";
-        String resultTableName = "";
+
+        String objectTableName = "";//object表名
+        String operationTableName = "";//operation表名
+        String resultTableName = "";//result表名
 
         // 2️⃣ 校验表名安全性
         String safeBaseName = sanitizeTableName(baseName);
@@ -40,9 +53,15 @@ public class DynamicTableServiceImp implements DynamicTableService {
         // 3️⃣ 遍历三个类型
         for (String key : columns.keySet()) {
             JSONArray arr = columns.getJSONArray(key);
-
+            //表名
             String tableName = safeBaseName + "_" + sanitizeTableName(key);
-            createSafeTable(tableName, arr);
+            //创建表
+            boolean isSuccess=createSafeTable(tableName, arr);
+            //添加成功
+            if (isSuccess) {
+                isSuccessMap.put(tableName,isSuccess);
+            }
+            //设置相应表名
             if(key.equals("object")){
                 objectTableName = tableName;
             }
@@ -60,13 +79,32 @@ public class DynamicTableServiceImp implements DynamicTableService {
         moduleLinkTableEntity.setResultTableName(resultTableName);
         moduleLinkTableEntity.setTableId(jsonData.getInteger("moduleId"));
         moduleLinkTableDao.insert(moduleLinkTableEntity);
+        //3个拆分后的子表都创建成功，更新模块状态
+        if (isSuccessMap.size() == 3){
+            LambdaUpdateWrapper<ModuleEntity> wrapper = new LambdaUpdateWrapper<>();
+            wrapper.eq(ModuleEntity::getId, jsonData.getInteger("moduleId"));
+            wrapper.set(ModuleEntity::getState, 1);
+            moduleService.update(wrapper);
+        }else {
+            // 删除已创建的表
+            for (String tableName : isSuccessMap.keySet()) {
+                try {
+                    String dropSql = "DROP TABLE IF EXISTS `" + tableName + "`";
+                    jdbcTemplate.execute(dropSql);
+                    System.out.println("已删除不完整的表: " + tableName);
+                } catch (Exception e) {
+                    System.err.println("删除表失败: " + tableName + " 错误：" + e.getMessage());
+                }
+            }
+            throw new RuntimeException("表创建失败");
+        }
     }
 
     /**
      * 动态安全建表方法：
      * 自动包含 id、sample_serial、object_id、create_time 等字段
      */
-    private void createSafeTable(String tableName, JSONArray arr) {
+private boolean createSafeTable(String tableName, JSONArray arr) {
         List<String> columnDefs = new ArrayList<>();
 
         // ✅ 固定主键
@@ -97,7 +135,13 @@ public class DynamicTableServiceImp implements DynamicTableService {
                 + "\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
         System.out.println("✅ 正在创建表：" + tableName);
-        jdbcTemplate.execute(sql);
+        try {
+            jdbcTemplate.execute(sql);
+            return true;
+        } catch (Exception e) {
+            System.err.println("创建表失败：" + tableName + " 错误：" + e.getMessage());
+            return false;
+        }
     }
 
 
