@@ -7,8 +7,10 @@ import com.kdde.basemodule.basemodule.dao.ModuleDao;
 import com.kdde.basemodule.basemodule.dao.ModuleLinkTableDao;
 import com.kdde.basemodule.basemodule.entity.ModuleEntity;
 import com.kdde.basemodule.basemodule.entity.ModuleLinkTableEntity;
+import com.kdde.basemodule.basemodule.entity.ModuleStructureEntity;
 import com.kdde.basemodule.basemodule.service.DynamicTableService;
 import com.kdde.basemodule.basemodule.service.ModuleService;
+import com.kdde.basemodule.basemodule.service.ModuleStructureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ public class DynamicTableServiceImp implements DynamicTableService {
     @Autowired
     private ModuleService moduleService;
 
+    @Autowired
+    private ModuleStructureService moduleStructureService;
+
     private final JdbcTemplate jdbcTemplate;
 
     public DynamicTableServiceImp(JdbcTemplate jdbcTemplate) {
@@ -34,7 +39,9 @@ public class DynamicTableServiceImp implements DynamicTableService {
      * name_object、name_operation、name_result
      */
     public void createTablesFromJson(JSONObject jsonData) {
-
+//        LambdaUpdateWrapper<ModuleStructureEntity> wrapper = new LambdaUpdateWrapper<>();
+//        wrapper.eq(ModuleStructureEntity::getModuleId, jsonData.getInteger("moduleId"));
+//        List<ModuleStructureEntity> list = moduleStructureService.list(wrapper);
 
 
         // 表名：该表是否创建成功。
