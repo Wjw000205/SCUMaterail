@@ -14,6 +14,8 @@ import com.kdde.basemodule.basemodule.service.ModuleStructureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -39,61 +41,68 @@ public class DynamicTableServiceImp implements DynamicTableService {
      * name_object、name_operation、name_result
      */
     public void createTablesFromJson(JSONObject jsonData) {
-//        LambdaUpdateWrapper<ModuleStructureEntity> wrapper = new LambdaUpdateWrapper<>();
-//        wrapper.eq(ModuleStructureEntity::getModuleId, jsonData.getInteger("moduleId"));
-//        List<ModuleStructureEntity> list = moduleStructureService.list(wrapper);
+        // 表名 -> 是否创建成功
+        Map<String, Boolean> isSuccessMap = new HashMap<>();
 
-
-        // 表名：该表是否创建成功。
-        Map<String,Boolean> isSuccessMap = new HashMap<>();
         // 1️⃣ 解析主信息
         String baseName = jsonData.getString("name");
         JSONObject columns = jsonData.getJSONObject("columns");
 
-        String objectTableName = "";//object表名
-        String operationTableName = "";//operation表名
-        String resultTableName = "";//result表名
+        String objectTableName = "";
+        String operationTableName = "";
+        String resultTableName = "";
 
         // 2️⃣ 校验表名安全性
         String safeBaseName = sanitizeTableName(baseName);
 
-        // 3️⃣ 遍历三个类型
+        // 3️⃣ 生成唯一后缀（基于时间戳 + 随机字符串）
+        String uniqueSuffix = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
+                + "_" + UUID.randomUUID().toString().substring(0, 6);
+
+        // 4️⃣ 遍历三个类型（object / operation / result）
         for (String key : columns.keySet()) {
             JSONArray arr = columns.getJSONArray(key);
-            //表名
-            String tableName = safeBaseName + "_" + sanitizeTableName(key);
-            //创建表
-            boolean isSuccess=createSafeTable(tableName, arr);
-            //添加成功
+
+            // ✅ 构造唯一表名
+            String tableName = safeBaseName + "_" + sanitizeTableName(key) + "_" + uniqueSuffix;
+
+            // ✅ 创建表
+            boolean isSuccess = createSafeTable(tableName, arr);
+
             if (isSuccess) {
-                isSuccessMap.put(tableName,isSuccess);
+                isSuccessMap.put(tableName, true);
             }
-            //设置相应表名
-            if(key.equals("object")){
-                objectTableName = tableName;
-            }
-            if(key.equals("operation")){
-                operationTableName = tableName;
-            }
-            if(key.equals("result")){
-                resultTableName = tableName;
+
+            // ✅ 记录每种表的名字
+            switch (key) {
+                case "object":
+                    objectTableName = tableName;
+                    break;
+                case "operation":
+                    operationTableName = tableName;
+                    break;
+                case "result":
+                    resultTableName = tableName;
+                    break;
             }
         }
-        //将表格名插入映射表
-        ModuleLinkTableEntity moduleLinkTableEntity = new ModuleLinkTableEntity();
-        moduleLinkTableEntity.setOperationTableName(operationTableName);
-        moduleLinkTableEntity.setObjectTableName(objectTableName);
-        moduleLinkTableEntity.setResultTableName(resultTableName);
-        moduleLinkTableEntity.setTableId(jsonData.getInteger("moduleId"));
-        moduleLinkTableDao.insert(moduleLinkTableEntity);
-        //3个拆分后的子表都创建成功，更新模块状态
-        if (isSuccessMap.size() == 3){
+
+        // 5️⃣ 记录表格映射关系
+        ModuleLinkTableEntity link = new ModuleLinkTableEntity();
+        link.setOperationTableName(operationTableName);
+        link.setObjectTableName(objectTableName);
+        link.setResultTableName(resultTableName);
+        link.setModuleId(jsonData.getInteger("moduleId"));
+        moduleLinkTableDao.insert(link);
+
+        // 6️⃣ 检查表是否都创建成功
+        if (isSuccessMap.size() == 3) {
             LambdaUpdateWrapper<ModuleEntity> wrapper = new LambdaUpdateWrapper<>();
             wrapper.eq(ModuleEntity::getId, jsonData.getInteger("moduleId"));
             wrapper.set(ModuleEntity::getState, 1);
             moduleService.update(wrapper);
-        }else {
-            // 删除已创建的表
+        } else {
+            // 删除已创建的表，防止数据库污染
             for (String tableName : isSuccessMap.keySet()) {
                 try {
                     String dropSql = "DROP TABLE IF EXISTS `" + tableName + "`";
@@ -107,21 +116,24 @@ public class DynamicTableServiceImp implements DynamicTableService {
         }
     }
 
+
     /**
      * 动态安全建表方法：
      * 自动包含 id、sample_serial、object_id、create_time 等字段
      */
-private boolean createSafeTable(String tableName, JSONArray arr) {
+    private boolean createSafeTable(String tableName, JSONArray arr) {
         List<String> columnDefs = new ArrayList<>();
 
         // ✅ 固定主键
         columnDefs.add("id BIGINT AUTO_INCREMENT PRIMARY KEY");
 
         // ✅ 样品编号
-        columnDefs.add("sample_serial VARCHAR(255) NOT NULL");
+        columnDefs.add("sample_serial VARCHAR(255) NOT NULL COMMENT '样品编号'");
 
-        // ✅ 对应 object 表的关联 ID
-        columnDefs.add("object_id BIGINT DEFAULT NULL");
+        // ✅ 如果是 result 表，额外添加对应 operation 的字段
+        if (tableName.toLowerCase().contains("result")) {
+            columnDefs.add("operation_id BIGINT DEFAULT NULL COMMENT '对应操作表ID'");
+        }
 
         // ✅ 前端动态列
         for (Object o : arr) {
@@ -134,7 +146,7 @@ private boolean createSafeTable(String tableName, JSONArray arr) {
         }
 
         // ✅ 额外字段
-        columnDefs.add("create_time DATETIME DEFAULT CURRENT_TIMESTAMP");
+        columnDefs.add("create_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'");
 
         // ✅ 拼接 SQL
         String sql = "CREATE TABLE IF NOT EXISTS `" + tableName + "` (\n  "
@@ -150,6 +162,8 @@ private boolean createSafeTable(String tableName, JSONArray arr) {
             return false;
         }
     }
+
+
 
 
 
