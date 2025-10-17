@@ -39,11 +39,7 @@ public class DynamicTableServiceImp implements DynamicTableService {
      * name_object、name_operation、name_result
      */
     public void createTablesFromJson(JSONObject jsonData) {
-//        LambdaUpdateWrapper<ModuleStructureEntity> wrapper = new LambdaUpdateWrapper<>();
-//        wrapper.eq(ModuleStructureEntity::getModuleId, jsonData.getInteger("moduleId"));
-//        List<ModuleStructureEntity> list = moduleStructureService.list(wrapper);
-
-
+        updateColumnName(jsonData);
         // 表名：该表是否创建成功。
         Map<String,Boolean> isSuccessMap = new HashMap<>();
         // 1️⃣ 解析主信息
@@ -104,6 +100,34 @@ public class DynamicTableServiceImp implements DynamicTableService {
                 }
             }
             throw new RuntimeException("表创建失败");
+        }
+    }
+
+    /**
+     * 审核员审核通过后，将可能更新的新字段名更新到数据库中
+     *
+     */
+    private void updateColumnName(JSONObject jsonData){
+        //获取前端数据
+        //模板id
+        Integer moduleId = jsonData.getInteger("moduleId");
+        //所有字段的列表
+        ArrayList<JSONObject> allColumns_list=new ArrayList<>();
+        JSONObject columns = jsonData.getJSONObject("columns");
+        for (String key : columns.keySet()) {
+            JSONArray columnsJSONArray = columns.getJSONArray(key);
+            for (int i = 0; i < columnsJSONArray.size(); i++){
+                allColumns_list.add(columnsJSONArray.getJSONObject(i));
+            }
+        }
+        for (JSONObject jsonObject : allColumns_list) {
+            Integer columnId = jsonObject.getInteger("id");
+            String columnName = jsonObject.getString("columnName");
+            LambdaUpdateWrapper<ModuleStructureEntity> wrapper = new LambdaUpdateWrapper<>();
+            wrapper.eq(ModuleStructureEntity::getModuleId, moduleId);
+            wrapper.eq(ModuleStructureEntity::getId, columnId);
+            wrapper.set(ModuleStructureEntity::getColumnName, columnName);
+            moduleStructureService.update(wrapper);
         }
     }
 
