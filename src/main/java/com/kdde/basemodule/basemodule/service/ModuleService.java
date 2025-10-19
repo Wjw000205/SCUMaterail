@@ -7,11 +7,11 @@ import com.kdde.basemodule.basemodule.entity.ModuleEntity;
 import java.util.List;
 
 public interface ModuleService extends IService<ModuleEntity> {
-    public List<ModuleEntity> getAllModule(int parentId);
+    List<ModuleEntity> getAllModule(int parentId);
 
-    public int createModule(JSONObject module);
+    int createModule(JSONObject module);
 
-    public boolean deleteModules(List<Integer> moduleNames);
+    boolean deleteModules(List<Integer> moduleNames);
 
-    public boolean updateModule(ModuleEntity module);
+    boolean updateModule(ModuleEntity module);
 }

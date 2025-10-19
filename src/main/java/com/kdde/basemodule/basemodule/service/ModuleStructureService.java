@@ -7,5 +7,5 @@ import com.kdde.basemodule.basemodule.entity.ModuleStructureEntity;
 import java.util.List;
 
 public interface ModuleStructureService extends IService<ModuleStructureEntity> {
-    public boolean insertModuleStructure(JSONObject columnData,int moduleId);
+    boolean insertModuleStructure(JSONObject columnData,int moduleId);
 }
