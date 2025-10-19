@@ -6,5 +6,5 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
 
 public interface DynamicTableService {
-    public void createTablesFromJson(JSONObject jsonData);
+    void createTablesFromJson(JSONObject jsonData);
 }

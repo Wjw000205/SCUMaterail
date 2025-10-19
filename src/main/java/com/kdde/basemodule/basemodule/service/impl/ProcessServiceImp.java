@@ -3,6 +3,7 @@ package com.kdde.basemodule.basemodule.service.impl;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.kdde.basemodule.basemodule.dao.ModuleDao;
 import com.kdde.basemodule.basemodule.dao.ModuleLinkTableDao;
 import com.kdde.basemodule.basemodule.dao.ModuleStructureDao;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -28,9 +30,6 @@ public class ProcessServiceImp implements ProcessService {
 
     @Autowired
     private DynamicTableService dynamicTableService;
-
-    @Autowired
-    private ModuleLinkTableDao moduleLinkTableDao;
 
     @Override
     public List<ModuleEntity> getModules() {
@@ -49,13 +48,13 @@ public class ProcessServiceImp implements ProcessService {
         JSONArray operationArray = new JSONArray();
         JSONArray resultArray = new JSONArray();
         for (ModuleStructureEntity moduleStructureEntity : moduleStructureEntities) {
-            if(moduleStructureEntity.getBelong().equals("object")){
+            if (moduleStructureEntity.getBelong().equals("object")) {
                 objectArray.add(moduleStructureEntity);
             }
-            if(moduleStructureEntity.getBelong().equals("operation")){
+            if (moduleStructureEntity.getBelong().equals("operation")) {
                 operationArray.add(moduleStructureEntity);
             }
-            if(moduleStructureEntity.getBelong().equals("result")){
+            if (moduleStructureEntity.getBelong().equals("result")) {
                 resultArray.add(moduleStructureEntity);
             }
         }
@@ -68,12 +67,31 @@ public class ProcessServiceImp implements ProcessService {
 
     @Override
     public boolean createModuleTable(JSONObject jsonObject) {
-        try{
+        try {
             dynamicTableService.createTablesFromJson(jsonObject);
+            //建表成功后更新结构表
+            JSONArray objectArray = jsonObject.getJSONArray("object");
+            JSONArray operationArray = jsonObject.getJSONArray("operation");
+            JSONArray resultArray = jsonObject.getJSONArray("result");
+
+            updateInfo(objectArray);
+            updateInfo(operationArray);
+            updateInfo(resultArray);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return false;
+        }
+    }
+
+    private void updateInfo(JSONArray operationArray) {
+        for (int i = 0; i < operationArray.size(); i++) {
+            JSONObject obj = operationArray.getJSONObject(i);
+            UpdateWrapper<ModuleStructureEntity> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("id", obj.getInteger("id"))
+                    .set("column_name", obj.getString("columnName"))
+                    .set("column_contribution", obj.getString("columnContribution"));
+            moduleStructureDao.update(null, updateWrapper);
         }
     }
 }
