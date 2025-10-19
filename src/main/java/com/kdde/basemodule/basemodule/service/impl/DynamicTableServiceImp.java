@@ -28,9 +28,6 @@ public class DynamicTableServiceImp implements DynamicTableService {
     @Autowired
     private ModuleService moduleService;
 
-    @Autowired
-    private ModuleStructureService moduleStructureService;
-
     private final JdbcTemplate jdbcTemplate;
 
     public DynamicTableServiceImp(JdbcTemplate jdbcTemplate) {

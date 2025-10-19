@@ -117,31 +117,31 @@ public class ModuleDataServiceImp implements ModuleDataService {
         // ✅ Object 表（按 sample_serial）
         if (lower.contains("object")) {
             String sampleSerial = (String) dataMap.get("sample_serial");
-            List<Long> ids = moduleDataDao.findIdsBySampleSerial(tableName, sampleSerial);
+            List<Long> ids = moduleDataDao.findIdBySampleSerial(tableName, sampleSerial);
             if (ids != null && !ids.isEmpty()) {
                 System.out.println("✅ Object 已存在，id=" + ids.get(0));
                 return ids.get(0);
             }
             moduleDataDao.insertDynamic(tableName, dataMap);
-            ids = moduleDataDao.findIdsBySampleSerial(tableName, sampleSerial);
+            ids = moduleDataDao.findIdBySampleSerial(tableName, sampleSerial);
             if (ids != null && !ids.isEmpty()) id = ids.get(0);
         }
 
         // ✅ Operation 表
         else if (lower.contains("operation")) {
-            List<Long> ids = moduleDataDao.findMatchingRowIds(tableName, dataMap);
+            List<Long> ids = moduleDataDao.findMatchingRowId(tableName, dataMap);
             if (ids != null && !ids.isEmpty()) {
                 System.out.println("✅ Operation 已存在，id=" + ids.get(0));
                 return ids.get(0);
             }
             moduleDataDao.insertDynamic(tableName, dataMap);
-            ids = moduleDataDao.findMatchingRowIds(tableName, dataMap);
+            ids = moduleDataDao.findMatchingRowId(tableName, dataMap);
             if (ids != null && !ids.isEmpty()) id = ids.get(0);
         }
 
         // ✅ Result 表
         else if (lower.contains("result")) {
-            List<Long> ids = moduleDataDao.findMatchingRowIds(tableName, dataMap);
+            List<Long> ids = moduleDataDao.findMatchingRowId(tableName, dataMap);
             if (ids != null && !ids.isEmpty()) {
                 System.out.println("✅ Result 已存在，跳过插入");
                 return null;

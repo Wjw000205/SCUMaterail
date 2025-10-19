@@ -26,10 +26,10 @@ public interface ModuleDataDao {
     int insertDynamic(@Param("tableName") String tableName, @Param("dataMap") Map<String, Object> dataMap);
 
     /** 查询 object 表是否存在 sample_serial */
-    List<Long> findIdsBySampleSerial(@Param("tableName") String tableName, @Param("sampleSerial") String sampleSerial);
+    List<Long> findIdBySampleSerial(@Param("tableName") String tableName, @Param("sampleSerial") String sampleSerial);
 
     /** 查询 operation/result 表中是否存在完全匹配的数据 */
-    List<Long> findMatchingRowIds(@Param("tableName") String tableName, @Param("dataMap") Map<String, Object> dataMap);
+    List<Long> findMatchingRowId(@Param("tableName") String tableName, @Param("dataMap") Map<String, Object> dataMap);
 
     @Select("select column_name,column_contribution from module_structure where module_id = #{moduleId} and belong = #{belong}")
     List<String> getColumnNameList(int moduleId,String belong);
