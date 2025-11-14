@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -82,7 +83,7 @@ public class ModuleDataController {
         }
     }
     @Operation(summary = "批量上传模块数据", description = "上传 Excel 模板文件进行批量入库")
-    @PostMapping(path = "/upload/{moduleId}",value = "/upload/{moduleId}", consumes = "multipart/form-data")
+    @PostMapping(path = "/upload/{moduleId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public R uploadExcel(
             @Parameter(description = "模块 ID", required = true)
             @PathVariable int moduleId,

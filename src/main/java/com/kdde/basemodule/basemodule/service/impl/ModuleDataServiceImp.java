@@ -24,8 +24,9 @@ public class ModuleDataServiceImp implements ModuleDataService {
 
     @Override
     public List<Map<String, Object>> getModuleList(int moduleId) {
-        String objectTableName = moduleDataDao.getTableName("object_table_name", moduleId);
-        return moduleDataDao.getModuleList(objectTableName);
+        Map<String,String> tableName = moduleDataDao.getModuleTableName(moduleId);
+        log.info(tableName.toString());
+        return moduleDataDao.getModuleList(tableName.get("object_table_name"),tableName.get("result_table_name"),tableName.get("operation_table_name"));
     }
 
     @Override

@@ -1,5 +1,6 @@
 server:
   port: 8083
+  address: 0.0.0.0   # 关键：允许所有网卡访问
 spring:
   application:
     name: materialPlatform
