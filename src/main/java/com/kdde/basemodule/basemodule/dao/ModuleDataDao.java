@@ -11,10 +11,22 @@ import java.util.Map;
 public interface ModuleDataDao {
 
     @Select("select ${tableName} from module_conflict_table where module_id = #{moduleId}")
-    String getTableName(String tableName,int moduleId);
+    String getTableName(String objectTableName,int moduleId);
 
-    @Select("select *  from ${tableName}")
-    List<Map<String,Object>> getModuleList(String tableName);
+    @Select("select * from module_conflict_table where module_id = #{moduleId}")
+    Map<String,String> getModuleTableName(int moduleId);
+
+    @Select("SELECT * " +
+            "FROM ${objectTableName} ot " +
+            "LEFT JOIN ${operationTableName} opt " +
+            "  ON ot.sample_serial = opt.sample_serial " +
+            "LEFT JOIN ${resultTableName} rt " +
+            "  ON rt.operation_id = opt.id")
+    List<Map<String, Object>> getModuleList(
+            @Param("objectTableName") String objectTableName,
+            @Param("resultTableName") String resultTableName,
+            @Param("operationTableName") String operationTableName
+    );
 
     @Select("select * from ${tableName} where sample_serial = #{sampleSerial}")
     List<Map<String,Object>> getModuleDetailInfo(String tableName,String sampleSerial);
