@@ -21,6 +21,7 @@ import com.kdde.basemodule.basemodule.common.utils.Query;
 import com.kdde.basemodule.basemodule.dao.UserInfoDao;
 import com.kdde.basemodule.basemodule.entity.UserInfoEntity;
 import com.kdde.basemodule.basemodule.service.UserInfoService;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -46,7 +47,8 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
     public UserLoginVO login(@RequestBody UserLoginDTO userLoginDTO) {
 
         String username = userLoginDTO.getUsername();
-        String password = userLoginDTO.getPassword();
+        //获取md5加密后的密码
+        String password = DigestUtils.md5DigestAsHex(userLoginDTO.getPassword().getBytes());
         String email = userLoginDTO.getEmail();
 
         UserLoginVO userLoginVO = new UserLoginVO();
@@ -93,7 +95,8 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
 
         UserInfoEntity userInfoEntity = new UserInfoEntity();
         userInfoEntity.setUsername(userRegistDTO.getUsername());
-        userInfoEntity.setPassword(password);
+        //把密码进行md5加密
+        userInfoEntity.setPassword(DigestUtils.md5DigestAsHex(password.getBytes()));
         userInfoEntity.setEmail(userRegistDTO.getEmail());
         userInfoEntity.setName(userRegistDTO.getName());
 
