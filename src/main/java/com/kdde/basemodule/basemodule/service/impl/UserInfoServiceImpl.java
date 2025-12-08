@@ -65,6 +65,8 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
         else{
             userLoginVO.setSatus(1);
             userLoginVO.setUsername(user.getUsername());
+            userLoginVO.setName(user.getName());
+            userLoginVO.setRole(user.getRole());
         }
         return userLoginVO;
     }

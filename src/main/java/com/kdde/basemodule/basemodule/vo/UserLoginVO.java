@@ -11,6 +11,7 @@ public class UserLoginVO {
    private String username;
    private String name;
    private Integer satus;
+   private Integer role;
 
     public String getUsername() {
         return username;
@@ -35,4 +36,5 @@ public class UserLoginVO {
     public void setSatus(Integer satus) {
         this.satus = satus;
     }
+
 }

@@ -41,6 +41,9 @@ public class UserInfoController {
      */
     @PostMapping(path = "/login")
     public R login(@RequestBody UserLoginDTO userLoginDTO) {
+
+
+
         log.info("登录请求");
         UserLoginVO userLoginVO =  userInfoService.login(userLoginDTO);
         return R.ok().put("logininfo",userLoginVO);
