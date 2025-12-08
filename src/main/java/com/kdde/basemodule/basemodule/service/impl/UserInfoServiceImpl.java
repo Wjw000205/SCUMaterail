@@ -7,11 +7,13 @@ import com.kdde.basemodule.basemodule.common.exception.InvalidRegistInfoExceptio
 import com.kdde.basemodule.basemodule.common.exception.PasswordEditFailedException;
 import com.kdde.basemodule.basemodule.common.utils.PageUtils;
 import com.kdde.basemodule.basemodule.common.utils.R;
+import com.kdde.basemodule.basemodule.dto.CheckCode;
 import com.kdde.basemodule.basemodule.dto.UserLoginDTO;
 import com.kdde.basemodule.basemodule.dto.UserRegistDTO;
 import com.kdde.basemodule.basemodule.vo.UserLoginVO;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -22,7 +24,11 @@ import com.kdde.basemodule.basemodule.dao.UserInfoDao;
 import com.kdde.basemodule.basemodule.entity.UserInfoEntity;
 import com.kdde.basemodule.basemodule.service.UserInfoService;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 @Service("userInfoService")
@@ -38,20 +44,35 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
         return new PageUtils(page);
     }
 
+
+
     /**
      * 登录
      * @param userLoginDTO
      * @return
      */
     @Override
-    public UserLoginVO login(@RequestBody UserLoginDTO userLoginDTO) {
+    public UserLoginVO login(@RequestBody UserLoginDTO userLoginDTO,HttpSession session) {
 
+        UserLoginVO userLoginVO = new UserLoginVO();
+
+        //获取图形验证码
+        String checkCode = userLoginDTO.getCheckCode();
+        if (checkCode == null||!CheckCode.check_equals(checkCode, (String) session.getAttribute("check_code_key"))){
+            System.out.println("------------------------");
+            System.out.println(checkCode);
+            System.out.println(session.getAttribute("check_code_key"));
+            userLoginVO.setSatus(4);//status 4: 验证码错误
+            return userLoginVO;
+        }
+        session.removeAttribute("check_code_key");
         String username = userLoginDTO.getUsername();
         //获取md5加密后的密码
         String password = DigestUtils.md5DigestAsHex(userLoginDTO.getPassword().getBytes());
         String email = userLoginDTO.getEmail();
 
-        UserLoginVO userLoginVO = new UserLoginVO();
+
+
         QueryWrapper<UserInfoEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
 

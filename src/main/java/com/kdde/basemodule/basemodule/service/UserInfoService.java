@@ -8,6 +8,7 @@ import com.kdde.basemodule.basemodule.dto.UserRegistDTO;
 import com.kdde.basemodule.basemodule.entity.UserInfoEntity;
 import com.kdde.basemodule.basemodule.vo.UserLoginVO;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
@@ -22,7 +23,7 @@ public interface UserInfoService extends IService<UserInfoEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
-    UserLoginVO login(UserLoginDTO userLoginDTO);
+    UserLoginVO login(UserLoginDTO userLoginDTO, HttpSession session);
 
     Boolean regist(UserRegistDTO userRegistDTO);
 
