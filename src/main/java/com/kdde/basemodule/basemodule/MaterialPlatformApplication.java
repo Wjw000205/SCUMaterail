@@ -15,3 +15,4 @@ public class MaterialPlatformApplication {
         SpringApplication.run(MaterialPlatformApplication.class, args);
     }
 }
+
