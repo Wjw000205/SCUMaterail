@@ -59,9 +59,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
         //获取图形验证码
         String checkCode = userLoginDTO.getCheckCode();
         if (checkCode == null||!CheckCode.check_equals(checkCode, (String) session.getAttribute("check_code_key"))){
-            System.out.println("------------------------");
-            System.out.println(checkCode);
-            System.out.println(session.getAttribute("check_code_key"));
+
             userLoginVO.setSatus(4);//status 4: 验证码错误
             return userLoginVO;
         }
