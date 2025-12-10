@@ -100,7 +100,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
         String password = userRegistDTO.getPassword();
         String passwordConfirm = userRegistDTO.getPasswordConfirm();
 
-        if(username==null ||password == null || !password.equals(passwordConfirm) || password.length() < 6){
+        if(username==null ||password == null || !password.equals(passwordConfirm)){
             throw new InvalidRegistInfoException("错误的注册信息");
         }
 
@@ -120,7 +120,8 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
         userInfoEntity.setPassword(DigestUtils.md5DigestAsHex(password.getBytes()));
         userInfoEntity.setEmail(userRegistDTO.getEmail());
         userInfoEntity.setName(userRegistDTO.getName());
-
+        //默认注册设为普通用户
+        userInfoEntity.setRole(1);
         save(userInfoEntity);
         return true;
     }

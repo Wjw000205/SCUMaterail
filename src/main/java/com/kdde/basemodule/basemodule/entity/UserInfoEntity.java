@@ -21,6 +21,8 @@ import lombok.ToString;
 //@TableName("user_info")
 @TableName("user")
 public class UserInfoEntity implements Serializable {
+
+	//1 普通用户 2 管理员 3 审核权限
 	private static final long serialVersionUID = 1L;
 
 	/**
