@@ -1,11 +1,13 @@
 package com.kdde.basemodule.basemodule.controller;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.kdde.basemodule.basemodule.common.utils.PageUtils;
 import com.kdde.basemodule.basemodule.common.utils.R;
+import com.kdde.basemodule.basemodule.dto.CheckCode;
 import com.kdde.basemodule.basemodule.dto.UserLoginDTO;
 import com.kdde.basemodule.basemodule.dto.UserRegistDTO;
 import com.kdde.basemodule.basemodule.vo.UserLoginVO;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import com.kdde.basemodule.basemodule.entity.UserInfoEntity;
 import com.kdde.basemodule.basemodule.service.UserInfoService;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 /**
@@ -34,15 +38,31 @@ public class UserInfoController {
     private UserInfoService userInfoService;
 
 
+
+    //发送图形验证码
+    @GetMapping("/checkCode")
+    public void checkCode(HttpServletResponse response, HttpSession session) throws IOException {
+        CheckCode checkCode = new CheckCode(130, 38, 5, 10);
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+        response.setContentType("image/jpeg");
+        String code = checkCode.getCode();
+        session.setAttribute("check_code_key", code);
+        checkCode.write(response.getOutputStream());
+    }
+
+
     /**
      * 用户登录
      * @param userLoginDTO
      * @return
      */
     @PostMapping(path = "/login")
-    public R login(@RequestBody UserLoginDTO userLoginDTO) {
+    public R login(@RequestBody UserLoginDTO userLoginDTO,HttpSession session) {
+
         log.info("登录请求");
-        UserLoginVO userLoginVO =  userInfoService.login(userLoginDTO);
+        UserLoginVO userLoginVO =  userInfoService.login(userLoginDTO,session);
         return R.ok().put("logininfo",userLoginVO);
 
     }

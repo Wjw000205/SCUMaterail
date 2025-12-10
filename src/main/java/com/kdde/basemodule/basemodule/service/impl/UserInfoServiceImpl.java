@@ -7,11 +7,13 @@ import com.kdde.basemodule.basemodule.common.exception.InvalidRegistInfoExceptio
 import com.kdde.basemodule.basemodule.common.exception.PasswordEditFailedException;
 import com.kdde.basemodule.basemodule.common.utils.PageUtils;
 import com.kdde.basemodule.basemodule.common.utils.R;
+import com.kdde.basemodule.basemodule.dto.CheckCode;
 import com.kdde.basemodule.basemodule.dto.UserLoginDTO;
 import com.kdde.basemodule.basemodule.dto.UserRegistDTO;
 import com.kdde.basemodule.basemodule.vo.UserLoginVO;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -21,7 +23,12 @@ import com.kdde.basemodule.basemodule.common.utils.Query;
 import com.kdde.basemodule.basemodule.dao.UserInfoDao;
 import com.kdde.basemodule.basemodule.entity.UserInfoEntity;
 import com.kdde.basemodule.basemodule.service.UserInfoService;
+import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 @Service("userInfoService")
@@ -37,19 +44,33 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
         return new PageUtils(page);
     }
 
+
+
     /**
      * 登录
      * @param userLoginDTO
      * @return
      */
     @Override
-    public UserLoginVO login(@RequestBody UserLoginDTO userLoginDTO) {
-
-        String username = userLoginDTO.getUsername();
-        String password = userLoginDTO.getPassword();
-        String email = userLoginDTO.getEmail();
+    public UserLoginVO login(@RequestBody UserLoginDTO userLoginDTO,HttpSession session) {
 
         UserLoginVO userLoginVO = new UserLoginVO();
+
+        //获取图形验证码
+        String checkCode = userLoginDTO.getCheckCode();
+        if (checkCode == null||!CheckCode.check_equals(checkCode, (String) session.getAttribute("check_code_key"))){
+
+            userLoginVO.setSatus(4);//status 4: 验证码错误
+            return userLoginVO;
+        }
+        session.removeAttribute("check_code_key");
+        String username = userLoginDTO.getUsername();
+        //获取md5加密后的密码
+        String password = DigestUtils.md5DigestAsHex(userLoginDTO.getPassword().getBytes());
+        String email = userLoginDTO.getEmail();
+
+
+
         QueryWrapper<UserInfoEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
 
@@ -65,6 +86,8 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
         else{
             userLoginVO.setSatus(1);
             userLoginVO.setUsername(user.getUsername());
+            userLoginVO.setName(user.getName());
+            userLoginVO.setRole(user.getRole());
         }
         return userLoginVO;
     }
@@ -75,7 +98,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
         String password = userRegistDTO.getPassword();
         String passwordConfirm = userRegistDTO.getPasswordConfirm();
 
-        if(username==null ||password == null || !password.equals(passwordConfirm) || password.length() < 6){
+        if(username==null ||password == null || !password.equals(passwordConfirm)){
             throw new InvalidRegistInfoException("错误的注册信息");
         }
 
@@ -91,10 +114,12 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
 
         UserInfoEntity userInfoEntity = new UserInfoEntity();
         userInfoEntity.setUsername(userRegistDTO.getUsername());
-        userInfoEntity.setPassword(password);
+        //把密码进行md5加密
+        userInfoEntity.setPassword(DigestUtils.md5DigestAsHex(password.getBytes()));
         userInfoEntity.setEmail(userRegistDTO.getEmail());
         userInfoEntity.setName(userRegistDTO.getName());
-
+        //默认注册设为普通用户
+        userInfoEntity.setRole(1);
         save(userInfoEntity);
         return true;
     }
